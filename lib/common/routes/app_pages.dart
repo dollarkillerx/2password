@@ -1,4 +1,5 @@
 import 'package:password2/pages/user/login.dart';
+import 'package:password2/pages/user/registration.dart';
 
 import '../../pages/bashboard/binding.dart';
 import '../../pages/bashboard/index.dart';
@@ -8,7 +9,7 @@ import 'package:get/get.dart';
 
 class AppPages {
   // static const INIT = AppRoutes.DASHBOARD;
-  static const INIT = AppRoutes.Login;
+  static const INIT = AppRoutes.Regitry;
 
   static final routes = [
     GetPage(
@@ -19,6 +20,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.Login,
       page: () => LoginPage(),
+    ),
+    GetPage(
+      name: AppRoutes.Regitry,
+      page: () => RegistrationPage(),
     ),
   ];
 

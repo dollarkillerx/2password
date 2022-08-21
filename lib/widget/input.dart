@@ -107,3 +107,28 @@ class _LoginInputState extends State<LoginInput> {
     );
   }
 }
+
+class LoginButton extends StatelessWidget {
+  final String title;
+  final bool enable;
+  final VoidCallback? onPressed;
+
+  const LoginButton(this.title, {Key? key, this.enable = true, this.onPressed})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FractionallySizedBox(
+      widthFactor: 1,
+      child: MaterialButton(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+        height: 45,
+        onPressed: enable ? onPressed : null,
+        // 是否可按下
+        disabledColor: Colors.grey[100],
+        color: Colors.lightBlueAccent[200],
+        child: Text(title, style: TextStyle(color: Colors.white, fontSize: 16)),
+      ),
+    );
+  }
+}

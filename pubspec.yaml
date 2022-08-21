@@ -41,6 +41,7 @@ dependencies:
   shared_preferences: ^2.0.15
   lottie: ^1.4.1
   encrypt: ^5.0.1
+  ninja: ^3.0.8
 
 dev_dependencies:
   flutter_test:
