@@ -1,5 +1,7 @@
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/material.dart';
-import 'package:ninja/asymmetric/rsa/rsa.dart';
+import 'package:ninja/asymmetric/rsa/rsa.dart' as ninja;
+import 'package:pointycastle/asymmetric/api.dart';
 import '../../common/entity/captcha.dart';
 import '../../common/utils/img.dart';
 import '../../common/utils/strings.dart';
@@ -31,7 +33,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
   onInitNetwork() async {
-    CaptchaEntity? cap =  await LoginDao.captcha();
+    CaptchaEntity? cap = await LoginDao.captcha();
     if (cap != null) {
       setState(() {
         captchaImage = cap.data!.base64Captcha!;
@@ -44,7 +46,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Register"),),
+      appBar: AppBar(
+        title: Text("Register"),
+      ),
       body: LoadingWidget(
         child: ListView(
           children: [
@@ -63,8 +67,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 onChanged: (text) {
                   password = text;
                   checkInput();
-                }
-            ),
+                }),
             LoginInput(
                 title: "確認密碼",
                 hint: "請再次輸入密碼",
@@ -72,8 +75,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 onChanged: (text) {
                   password2 = text;
                   checkInput();
-                }
-            ),
+                }),
             LoginInput(
               title: "驗證碼",
               hint: "請輸驗證碼",
@@ -82,11 +84,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 captcha = text;
                 checkInput();
               },
-
               rightWidget: Container(
                 height: 40,
                 padding: EdgeInsets.only(right: 10),
-                child: (){
+                child: () {
                   if (this.captchaImage != null) {
                     return InkWell(
                       child: imageFromBase64String(this.captchaImage!),
@@ -115,7 +116,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
     bool enable;
     if (isNotEmpty(account) &&
         isNotEmpty(password) &&
-        isNotEmpty(password2)  && isNotEmpty(captcha)) {
+        isNotEmpty(password2) &&
+        isNotEmpty(captcha)) {
       enable = true;
     } else {
       enable = false;
@@ -127,7 +129,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
   upImg() async {
-    CaptchaEntity? cap =  await LoginDao.captcha();
+    CaptchaEntity? cap = await LoginDao.captcha();
     if (cap != null) {
       setState(() {
         captchaImage = cap.data!.base64Captcha!;
@@ -136,12 +138,31 @@ class _RegistrationPageState extends State<RegistrationPage> {
     }
   }
 
+  // https://pub.dev/packages/ninja
+  // https://github.com/leocavalcante/encrypt
   checkParams() async {
-    final privateKey = RSAPrivateKey.generate(1024);
+    final privateKey = ninja.RSAPrivateKey.generate(1024);
     print(privateKey.p);
     print(privateKey.q);
     print(privateKey.n.bitLength);
     print(privateKey.toPem());
     print(privateKey.toPublicKey.toPem(toPkcs1: true));
+
+    RSAPublicKey? publicKey;
+    RSAPrivateKey? privKey;
+
+    publicKey = encrypt.RSAKeyParser()
+        .parse(privateKey.toPublicKey.toPem(toPkcs1: true)) as RSAPublicKey;
+    privKey = encrypt.RSAKeyParser().parse(privateKey.toPem()) as RSAPrivateKey;
+
+
+    final plainText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
+    final encrypter = encrypt.Encrypter(encrypt.RSA(publicKey: publicKey, privateKey: privKey));
+
+    final encrypted = encrypter.encrypt(plainText);
+    final decrypted = encrypter.decrypt(encrypted);
+
+    print(decrypted);
+    print(encrypted.base64);
   }
 }
