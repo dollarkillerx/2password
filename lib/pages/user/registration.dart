@@ -1,13 +1,15 @@
 import 'package:encrypt/encrypt.dart' as encrypt; // 加密
 import 'package:flutter/material.dart';
 import 'package:ninja/asymmetric/rsa/rsa.dart' as ninja; // 生成公钥私钥
-import 'package:pointycastle/asymmetric/api.dart';
+// import 'package:pointycastle/asymmetric/api.dart';
 import '../../common/entity/captcha.dart';
 import '../../common/utils/img.dart';
 import '../../common/utils/strings.dart';
 import '../../dao/login.dart';
 import '../../widget/input.dart';
 import '../../widget/loading.dart';
+import 'package:get/get.dart';
+
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -17,7 +19,7 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  bool loginEnable = true; // 參數校驗完畢 可登錄
+  bool loginEnable = false; // 參數校驗完畢 可登錄
   String? account;
   String? password;
   String? password2;
@@ -143,26 +145,36 @@ class _RegistrationPageState extends State<RegistrationPage> {
   // https://pub.dev/packages/ninja
   // https://github.com/leocavalcante/encrypt
   checkParams() async {
-    password = filling(password!, 32, "0");
-    final plainText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
-    final key = encrypt.Key.fromUtf8('my 32 length key................');
+    print(password);
+    var newPassword = filling(password!, 32, "0");
+    print(newPassword);
+    final key = encrypt.Key.fromUtf8(newPassword);
     final iv = encrypt.IV.fromLength(16);
 
+    final privateKey = ninja.RSAPrivateKey.generate(1024);
+    var pKey = privateKey.toPem();
+    var pbKey = privateKey.toPublicKey.toPem(toPkcs1: true);
+
     final encrypter = encrypt.Encrypter(encrypt.AES(key));
+    final encrypted = encrypter.encrypt(pKey, iv: iv);
 
-    final encrypted = encrypter.encrypt(plainText, iv: iv);
-    final decrypted = encrypter.decrypt(encrypted, iv: iv);
-
-    print(decrypted); // Lorem ipsum dolor sit amet, consectetur adipiscing elit
-    print(encrypted
-        .base64); // R4PxiU3h8YoIRqVowBXm36ZcCeNeZ4s1OvVBTfFlZRdmohQqOpPQqD1YecJeZMAop/hZ4OxqgC1WtwvX/hP9mw==
-    return;
+    bool? ok = await LoginDao.registry(captchaID!, captcha!, account!, pbKey, encrypted.base64);
+    if (ok != null && ok) {
+      Get.snackbar("SUCCESS", "注册成功");
+    }else {
+      upImg();
+    }
+    // password = filling(password!, 32, "0");
+    // final plainText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
+    // final key = encrypt.Key.fromUtf8('my 32 length key................');
+    // final iv = encrypt.IV.fromLength(16);
+    //
+    // final encrypter = encrypt.Encrypter(encrypt.AES(key));
+    //
+    // final encrypted = encrypter.encrypt(plainText, iv: iv);
+    // final decrypted = encrypter.decrypt(encrypted, iv: iv);
+    //
     // final privateKey = ninja.RSAPrivateKey.generate(1024);
-    // print(privateKey.p);
-    // print(privateKey.q);
-    // print(privateKey.n.bitLength);
-    // print(privateKey.toPem());
-    // print(privateKey.toPublicKey.toPem(toPkcs1: true));
     // var pKey = privateKey.toPem();
     // var pbKey = privateKey.toPublicKey.toPem(toPkcs1: true);
     //
@@ -188,5 +200,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
     //
     // print(decrypted);
     // print(encrypted.base64);
+    //
+    //
+    // bool? cap = await LoginDao.registry(captchaID!, captcha!, account!, publicKey, encryptedPrivateKey);
+    // if (cap != null) {
+    //   setState(() {
+    //     captchaImage = cap.data!.base64Captcha!;
+    //     captchaID = cap.data!.captchaId!;
+    //   });
+    // }
   }
 }

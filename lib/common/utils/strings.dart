@@ -13,4 +13,6 @@ filling(String input, int len, String fil) {
       input += fil;
     }
   }
+
+  return input;
 }
