@@ -8,8 +8,7 @@ import 'app_routes.dart';
 import 'package:get/get.dart';
 
 class AppPages {
-  // static const INIT = AppRoutes.DASHBOARD;
-  static const INIT = AppRoutes.Regitry;
+  static const INIT = AppRoutes.DASHBOARD;
 
   static final routes = [
     GetPage(

@@ -14,7 +14,7 @@ class DashBoardPage extends GetView<DashBoardController> {
       return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Title",
+            "2Password",
             style: TextStyle(color: Colors.black),
           ),
           backgroundColor: Colors.transparent,
