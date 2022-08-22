@@ -1,6 +1,9 @@
+import 'package:password2/pages/home/add_pass/binding.dart';
+import 'package:password2/pages/home/add_pass/index.dart';
+import 'package:password2/pages/home/general_list/binding.dart';
+import 'package:password2/pages/home/general_list/index.dart';
 import 'package:password2/pages/user/login.dart';
 import 'package:password2/pages/user/registration.dart';
-
 import '../../pages/bashboard/binding.dart';
 import '../../pages/bashboard/index.dart';
 import '../../pages/notfound/index.dart';
@@ -23,6 +26,16 @@ class AppPages {
     GetPage(
       name: AppRoutes.Regitry,
       page: () => RegistrationPage(),
+    ),
+    GetPage(
+      name: AppRoutes.GeneralList,
+      page: () => GeneralListPage(),
+      binding: GeneralListBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.AddPass,
+      page: () => AddPassPage(),
+      binding: AddPassBinding(),
     ),
   ];
 

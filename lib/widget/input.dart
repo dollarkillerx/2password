@@ -12,14 +12,14 @@ class LoginInput extends StatefulWidget {
 
   const LoginInput(
       {super.key,
-        required this.title, // title
-        this.hint,
-        this.onChanged,
-        this.focusChanged,
-        this.lineStretch = false,
-        this.obscureText = false,
-        this.keyboardType,
-        this.rightWidget});
+      required this.title, // title
+      this.hint,
+      this.onChanged,
+      this.focusChanged,
+      this.lineStretch = false,
+      this.obscureText = false,
+      this.keyboardType,
+      this.rightWidget});
 
   @override
   State<LoginInput> createState() => _LoginInputState();
@@ -94,6 +94,7 @@ class _LoginInputState extends State<LoginInput> {
         autofocus: !widget.obscureText,
         // 光標顔色
         cursorColor: Colors.black87,
+        maxLines: 1,
         style: TextStyle(
             fontSize: 16, color: Colors.black, fontWeight: FontWeight.w300),
         // 輸入框樣式

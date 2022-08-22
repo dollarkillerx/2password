@@ -20,6 +20,18 @@ class AppData {
     await LocalStorage.setString("my_jwt", jwt);
   }
 
+  static Future<String?> getMainPass() async {
+    var value = await LocalStorage.getString("mainPass");
+    if (value == null) {
+      return null;
+    }
+    return value;
+  }
+
+  static setMainPass(String jwt) async {
+    await LocalStorage.setString("mainPass", jwt);
+  }
+
   static Future<Encryption?> encryption() async {
     var publicKey = await LocalStorage.getString("my_publicKey");
     if (publicKey == null) {

@@ -189,7 +189,9 @@ class _LoginPageState extends State<LoginPage> {
       }
 
       // 存储JWT &
+      print(loginResponse.data!.jwt!);
       AppData.setJWT(loginResponse.data!.jwt!);
+      AppData.setMainPass(password!);
       AppData.setEncryption(ui.data!.publicKey!, pKey);
       Get.snackbar("SUCCESS", "登錄成功");
       Get.offAllNamed(AppRoutes.DASHBOARD);

@@ -4,13 +4,15 @@ import 'interface.dart';
 class DioAdapter extends HiNetAdapter {
   @override
   Future<HiNetResponse<T>> send<T>(BaseRequest request) async {
+    Uri uri = await request.uri();
+
     var options = Options(headers: request.header);
     Response? response;
     var error;
 
-    Uri uri = await request.uri();
     var url = uri.toString();
     print(url);
+    print(options.headers);
 
     try {
       switch (request.httpMethod()) {
