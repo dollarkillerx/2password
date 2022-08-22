@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: "Urgent Manager",
+      title: "2Password",
       debugShowCheckedModeBanner: false,
       initialRoute: AppPages.INIT,
       getPages: AppPages.routes,

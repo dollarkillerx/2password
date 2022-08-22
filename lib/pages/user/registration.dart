@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:ninja/asymmetric/rsa/rsa.dart' as ninja; // 生成公钥私钥
 // import 'package:pointycastle/asymmetric/api.dart';
 import '../../common/entity/captcha.dart';
+import '../../common/routes/app_routes.dart';
 import '../../common/utils/img.dart';
 import '../../common/utils/strings.dart';
 import '../../dao/login.dart';
 import '../../widget/input.dart';
 import '../../widget/loading.dart';
 import 'package:get/get.dart';
-
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -49,7 +49,25 @@ class _RegistrationPageState extends State<RegistrationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Register"),
+        title: Text(
+          "Register",
+        ),
+        actions: [
+          InkWell(
+            onTap: () {
+              Get.toNamed(AppRoutes.Login);
+            },
+            child: Container(
+              padding: EdgeInsets.only(left: 15, right: 15),
+              alignment: Alignment.center,
+              child: Text(
+                "Login",
+                // style: TextStyle(fontSize: 18, color: Colors.grey[500]),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          )
+        ],
       ),
       body: LoadingWidget(
         child: ListView(
@@ -158,10 +176,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
     final encrypter = encrypt.Encrypter(encrypt.AES(key));
     final encrypted = encrypter.encrypt(pKey, iv: iv);
 
-    bool? ok = await LoginDao.registry(captchaID!, captcha!, account!, pbKey, encrypted.base64);
+    bool? ok = await LoginDao.registry(
+        captchaID!, captcha!, account!, pbKey, encrypted.base64);
     if (ok != null && ok) {
       Get.snackbar("SUCCESS", "注册成功");
-    }else {
+      Get.toNamed(AppRoutes.Login);
+    } else {
       upImg();
     }
     // password = filling(password!, 32, "0");
