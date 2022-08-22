@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:password2/common/storage/user.dart';
 import 'package:password2/widget/loading.dart';
 import '../../common/entity/captcha.dart';
 import '../../common/entity/user_auth.dart';
@@ -188,7 +189,10 @@ class _LoginPageState extends State<LoginPage> {
       }
 
       // 存储JWT &
+      AppData.setJWT(loginResponse.data!.jwt!);
+      AppData.setEncryption(ui.data!.publicKey!, pKey);
       Get.snackbar("SUCCESS", "登錄成功");
+      Get.offAllNamed(AppRoutes.DASHBOARD);
     } catch (e) {
       print(e);
       upImg();
