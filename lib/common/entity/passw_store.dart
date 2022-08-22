@@ -258,3 +258,25 @@ class Notes {
     return data;
   }
 }
+
+class DJ {
+  String? requestId;
+  String? code;
+  String? data;
+
+  DJ({this.requestId, this.code, this.data});
+
+  DJ.fromJson(Map<String, dynamic> json) {
+    requestId = json['request_id'];
+    code = json['code'];
+    data = json['data'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['request_id'] = this.requestId;
+    data['code'] = this.code;
+    data['data'] = this.data;
+    return data;
+  }
+}

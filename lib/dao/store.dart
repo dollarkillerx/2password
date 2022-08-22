@@ -31,19 +31,19 @@ class EncryptionStore {
         );
       }
 
-      print("object");
-      print(result.data);
-      print("=======");
+      DJ jt = DJ.fromJson(result.data);
 
       var pss = await AppData.getMainPass();
       var newPassword = filling(pss!, 32, "0");
       final key = encrypt.Key.fromUtf8(newPassword);
+      final iv = encrypt.IV.fromLength(16);
       final encrypter = encrypt.Encrypter(encrypt.AES(key));
 
-      print(encrypter.decrypt(encrypt.Encrypted.fromBase64(result.data)));
-      final mp = jsonDecode(encrypter.decrypt(encrypt.Encrypted.fromBase64(result.data)));
-          
+      print(encrypter.decrypt(encrypt.Encrypted.fromBase64(jt.data!),iv: iv));
+      final mp = jsonDecode(encrypter.decrypt(encrypt.Encrypted.fromBase64(jt.data!),iv: iv));
+      print("aaaaaa");
       PasswdStore cap = PasswdStore.fromJson(mp);
+      print("aaaaaa............");
       return cap;
     } catch (e) {
       print(e);
@@ -69,9 +69,10 @@ class EncryptionStore {
 
     var pss = await AppData.getMainPass();
     var newPassword = filling(pss!, 32, "0");
+    print(newPassword);
     final key = encrypt.Key.fromUtf8(newPassword);
-    final encrypter = encrypt.Encrypter(encrypt.AES(key));
     final iv = encrypt.IV.fromLength(16);
+    final encrypter = encrypt.Encrypter(encrypt.AES(key));
 
     var newData = encrypter.encrypt(rp, iv: iv).base64;
 

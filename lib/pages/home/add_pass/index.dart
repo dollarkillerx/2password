@@ -51,7 +51,7 @@ class AddPassPage extends GetView<AddPassController> {
           ),
           Padding(
             padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-            child: LoginButton('登錄',
+            child: LoginButton('添加',
                 enable: controller.loginEnable,
                 onPressed: controller.addParams),
           ),

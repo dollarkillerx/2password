@@ -19,3 +19,4 @@ class GenericResp {
     return data;
   }
 }
+
