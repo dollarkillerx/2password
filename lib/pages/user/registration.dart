@@ -1,6 +1,6 @@
-import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:encrypt/encrypt.dart' as encrypt; // 加密
 import 'package:flutter/material.dart';
-import 'package:ninja/asymmetric/rsa/rsa.dart' as ninja;
+import 'package:ninja/asymmetric/rsa/rsa.dart' as ninja; // 生成公钥私钥
 import 'package:pointycastle/asymmetric/api.dart';
 import '../../common/entity/captcha.dart';
 import '../../common/utils/img.dart';
@@ -116,7 +116,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
     bool enable;
     if (isNotEmpty(account) &&
         isNotEmpty(password) &&
-        isNotEmpty(password2) &&
+        account!.length >= 4 &&
+        password == password2 &&
+        password!.length >= 8 &&
         isNotEmpty(captcha)) {
       enable = true;
     } else {
@@ -141,28 +143,50 @@ class _RegistrationPageState extends State<RegistrationPage> {
   // https://pub.dev/packages/ninja
   // https://github.com/leocavalcante/encrypt
   checkParams() async {
-    final privateKey = ninja.RSAPrivateKey.generate(1024);
-    print(privateKey.p);
-    print(privateKey.q);
-    print(privateKey.n.bitLength);
-    print(privateKey.toPem());
-    print(privateKey.toPublicKey.toPem(toPkcs1: true));
-
-    RSAPublicKey? publicKey;
-    RSAPrivateKey? privKey;
-
-    publicKey = encrypt.RSAKeyParser()
-        .parse(privateKey.toPublicKey.toPem(toPkcs1: true)) as RSAPublicKey;
-    privKey = encrypt.RSAKeyParser().parse(privateKey.toPem()) as RSAPrivateKey;
-
-
+    password = filling(password!, 32, "0");
     final plainText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
-    final encrypter = encrypt.Encrypter(encrypt.RSA(publicKey: publicKey, privateKey: privKey));
+    final key = encrypt.Key.fromUtf8('my 32 length key................');
+    final iv = encrypt.IV.fromLength(16);
 
-    final encrypted = encrypter.encrypt(plainText);
-    final decrypted = encrypter.decrypt(encrypted);
+    final encrypter = encrypt.Encrypter(encrypt.AES(key));
 
-    print(decrypted);
-    print(encrypted.base64);
+    final encrypted = encrypter.encrypt(plainText, iv: iv);
+    final decrypted = encrypter.decrypt(encrypted, iv: iv);
+
+    print(decrypted); // Lorem ipsum dolor sit amet, consectetur adipiscing elit
+    print(encrypted
+        .base64); // R4PxiU3h8YoIRqVowBXm36ZcCeNeZ4s1OvVBTfFlZRdmohQqOpPQqD1YecJeZMAop/hZ4OxqgC1WtwvX/hP9mw==
+    return;
+    // final privateKey = ninja.RSAPrivateKey.generate(1024);
+    // print(privateKey.p);
+    // print(privateKey.q);
+    // print(privateKey.n.bitLength);
+    // print(privateKey.toPem());
+    // print(privateKey.toPublicKey.toPem(toPkcs1: true));
+    // var pKey = privateKey.toPem();
+    // var pbKey = privateKey.toPublicKey.toPem(toPkcs1: true);
+    //
+    // RSAPublicKey? publicKey;
+    // RSAPrivateKey? privKey;
+    //
+    // publicKey = encrypt.RSAKeyParser().parse(pbKey) as RSAPublicKey;
+    // privKey = encrypt.RSAKeyParser().parse(pKey) as RSAPrivateKey;
+    //
+    // final plainText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
+    // final encrypter = encrypt.Encrypter(
+    //     encrypt.RSA(publicKey: publicKey, privateKey: privKey));
+    // final signer = encrypt.Signer(encrypt.RSASigner(
+    //     encrypt.RSASignDigest.SHA256,
+    //     publicKey: publicKey,
+    //     privateKey: privKey));
+    //
+    // final encrypted = encrypter.encrypt(plainText);
+    // final decrypted = encrypter.decrypt(encrypted);
+    //
+    // print(signer.sign('hello world').base64);
+    // print(signer.verify64('hello world', signer.sign('hello world').base64));
+    //
+    // print(decrypted);
+    // print(encrypted.base64);
   }
 }

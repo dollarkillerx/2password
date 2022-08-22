@@ -46,7 +46,7 @@ abstract class BaseRequest {
   }
 
   // add params
-  BaseRequest add(String k, dynamic v) {
+  BaseRequest param(String k, dynamic v) {
     params[k] = v;
     return this;
   }

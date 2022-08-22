@@ -23,6 +23,36 @@ class LoginDao {
       print(e);
       SmartDialog.showToast("$e");
     }
+    return null;
+  }
+
+  static Future<bool?> registry(String captchaID, String captchaCode,String account,String publicKey,String encryptedPrivateKey) async {
+    BaseRequest request = Registry();
+    HiNetAdapter adapter = DioAdapter();
+
+    request = request.setParam({
+      "captcha_id": captchaID,
+      "captcha_code": captchaCode,
+      "account": account,
+      "public_key": publicKey,
+      "encrypted_private_key": encryptedPrivateKey
+    });
+
+
+    try {
+      var result = await adapter.send(request);
+      var err = NetTools.CheckError(result.data);
+      if (err != null) {
+        print(err);
+        SmartDialog.showToast(err);
+        return false;
+      }
+      return true;
+    }catch (e) {
+      print(e);
+      SmartDialog.showToast("$e");
+    }
+    return null;
   }
 }
 
@@ -40,5 +70,22 @@ class Captcha extends BaseRequest {
   @override
   String path() {
     return "captcha";
+  }
+}
+
+class Registry extends BaseRequest {
+  @override
+  HttpMethod httpMethod() {
+    return HttpMethod.POST;
+  }
+
+  @override
+  bool neeLogin() {
+    return false;
+  }
+
+  @override
+  String path() {
+    return "registry";
   }
 }
