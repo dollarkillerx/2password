@@ -14,7 +14,7 @@ class AddPassPage extends GetView<AddPassController> {
             hint: "請輸入名称",
             onChanged: (text) {
               controller.logins.name = text;
-              controller.checkInput();
+              controller.checkInputByLogin();
             },
           ),
           LoginInput(
@@ -22,7 +22,7 @@ class AddPassPage extends GetView<AddPassController> {
             hint: "請輸入账户名",
             onChanged: (text) {
               controller.logins.account = text;
-              controller.checkInput();
+              controller.checkInputByLogin();
             },
           ),
           LoginInput(
@@ -30,7 +30,7 @@ class AddPassPage extends GetView<AddPassController> {
             hint: "請輸入密码",
             onChanged: (text) {
               controller.logins.password = text;
-              controller.checkInput();
+              controller.checkInputByLogin();
             },
           ),
           LoginInput(
@@ -38,7 +38,7 @@ class AddPassPage extends GetView<AddPassController> {
             hint: "請輸入备注",
             onChanged: (text) {
               controller.logins.remark = text;
-              controller.checkInput();
+              controller.checkInputByLogin();
             },
           ),
           LoginInput(
@@ -46,7 +46,7 @@ class AddPassPage extends GetView<AddPassController> {
             hint: "請輸入url",
             onChanged: (text) {
               controller.logins.url = text;
-              controller.checkInput();
+              controller.checkInputByLogin();
             },
           ),
           Padding(
@@ -72,7 +72,7 @@ class AddPassPage extends GetView<AddPassController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(controller.title),
+        title: Text(controller.title!),
       ),
       body: GetBuilder<AddPassController>(
         builder: (controller) {

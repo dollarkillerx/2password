@@ -16,7 +16,7 @@ class HomePage extends GetView<HomeController> {
             onTap: () {
               Get.toNamed(AppRoutes.GeneralList,
                   arguments: {
-                    "ctype": "website",
+                    "ctype": "login",
                     "title": "网站密码",
                   });
             },

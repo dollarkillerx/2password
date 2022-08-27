@@ -1,3 +1,18 @@
+class PasswdListAllEntity {
+  List<Logins> logins = [];
+  List<Cards> cards = [];
+  List<Identities> identities = [];
+  List<Notes> notes = [];
+}
+
+class ItemDataEntity {
+  String type = "";
+  Logins logins = Logins();
+  Cards cards = Cards();
+  Identities identities = Identities();
+  Notes notes = Notes();
+}
+
 class Logins {
   String? type;
   String? id;
@@ -6,17 +21,18 @@ class Logins {
   String? password;
   String? remark;
   String? url;
-  List<String>? img;
+  String? createTime;
+  List<String?>? img;
 
   Logins(
       {this.type,
-        this.id,
-        this.name,
-        this.account,
-        this.password,
-        this.remark,
-        this.url,
-        this.img});
+      this.id,
+      this.name,
+      this.account,
+      this.password,
+      this.remark,
+      this.url,
+      this.img});
 
   Logins.fromJson(Map<String, dynamic> json) {
     type = json['type'];
@@ -26,7 +42,10 @@ class Logins {
     password = json['password'];
     remark = json['remark'];
     url = json['url'];
-    img = json['img'].cast<String>();
+
+    if (json['img'] != null) {
+      img = json['img'].cast<String>();
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -53,19 +72,19 @@ class Cards {
   String? expireDate;
   String? ccv;
   String? remark;
-  List<String>? img;
+  List<String?>? img;
 
   Cards(
       {this.type,
-        this.id,
-        this.name,
-        this.holder,
-        this.number,
-        this.brand,
-        this.expireDate,
-        this.ccv,
-        this.remark,
-        this.img});
+      this.id,
+      this.name,
+      this.holder,
+      this.number,
+      this.brand,
+      this.expireDate,
+      this.ccv,
+      this.remark,
+      this.img});
 
   Cards.fromJson(Map<String, dynamic> json) {
     type = json['type'];
@@ -77,7 +96,9 @@ class Cards {
     expireDate = json['expire_date'];
     ccv = json['ccv'];
     remark = json['remark'];
-    img = json['img'].cast<String>();
+    if (json['img'] != null) {
+      img = json['img'].cast<String>();
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -102,7 +123,7 @@ class Identities {
   String? name;
   String? address;
   String? remark;
-  List<String>? img;
+  List<String?>? img;
 
   Identities(
       {this.type, this.id, this.name, this.address, this.remark, this.img});
@@ -113,7 +134,9 @@ class Identities {
     name = json['name'];
     address = json['address'];
     remark = json['remark'];
-    img = json['img'].cast<String>();
+    if (json['img'] != null) {
+      img = json['img'].cast<String>();
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -133,7 +156,7 @@ class Notes {
   String? id;
   String? name;
   String? remark;
-  List<String>? img;
+  List<String?>? img;
 
   Notes({this.type, this.id, this.name, this.remark, this.img});
 
@@ -142,7 +165,9 @@ class Notes {
     id = json['id'];
     name = json['name'];
     remark = json['remark'];
-    img = json['img'].cast<String>();
+    if (json['img'] != null) {
+      img = json['img'].cast<String>();
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -166,7 +191,9 @@ class PasswordAllInfoEntity {
   PasswordAllInfoEntity.fromJson(Map<String, dynamic> json) {
     requestId = json['request_id'];
     code = json['code'];
-    data = json['data'] != null ? new PasswordAllInfoData.fromJson(json['data']) : null;
+    data = json['data'] != null
+        ? new PasswordAllInfoData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -188,9 +215,9 @@ class PasswordAllInfoData {
 
   PasswordAllInfoData(
       {this.loginTypeCount,
-        this.cardCount,
-        this.identityTypeCount,
-        this.noteTypeCount});
+      this.cardCount,
+      this.identityTypeCount,
+      this.noteTypeCount});
 
   PasswordAllInfoData.fromJson(Map<String, dynamic> json) {
     loginTypeCount = json['login_type_count'];
@@ -205,6 +232,160 @@ class PasswordAllInfoData {
     data['card_count'] = this.cardCount;
     data['identity_type_count'] = this.identityTypeCount;
     data['note_type_count'] = this.noteTypeCount;
+    return data;
+  }
+}
+
+class PasswdAdd {
+  String? type;
+  String? payload;
+
+  PasswdAdd({this.type, this.payload});
+
+  PasswdAdd.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    payload = json['payload'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = this.type;
+    data['payload'] = this.payload;
+    return data;
+  }
+}
+
+class PasswdListEntity {
+  String? requestId;
+  String? code;
+  List<PasswdListData>? data;
+
+  PasswdListEntity({this.requestId, this.code, this.data});
+
+  PasswdListEntity.fromJson(Map<String, dynamic> json) {
+    requestId = json['request_id'];
+    code = json['code'];
+    if (json['data'] != null) {
+      data = <PasswdListData>[];
+      json['data'].forEach((v) {
+        data!.add(new PasswdListData.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['request_id'] = this.requestId;
+    data['code'] = this.code;
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class PasswdListData {
+  String? id;
+  String? createdAt;
+  String? updatedAt;
+  String? deletedAt;
+  String? account;
+  String? type;
+  String? payload;
+
+  PasswdListData(
+      {this.id,
+      this.createdAt,
+      this.updatedAt,
+      this.deletedAt,
+      this.account,
+      this.type,
+      this.payload});
+
+  PasswdListData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    deletedAt = json['deleted_at'];
+    account = json['account'];
+    type = json['type'];
+    payload = json['payload'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['deleted_at'] = this.deletedAt;
+    data['account'] = this.account;
+    data['type'] = this.type;
+    data['payload'] = this.payload;
+    return data;
+  }
+}
+
+class PasswdInfoEntity {
+  String? requestId;
+  String? code;
+  PasswdInfoEntityData? data;
+
+  PasswdInfoEntity({this.requestId, this.code, this.data});
+
+  PasswdInfoEntity.fromJson(Map<String, dynamic> json) {
+    requestId = json['request_id'];
+    code = json['code'];
+    data = json['data'] != null ? new PasswdInfoEntityData.fromJson(json['data']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['request_id'] = this.requestId;
+    data['code'] = this.code;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
+}
+
+class PasswdInfoEntityData {
+  String? id;
+  String? createdAt;
+  String? updatedAt;
+  String? deletedAt;
+  String? account;
+  String? type;
+  String? payload;
+
+  PasswdInfoEntityData(
+      {this.id,
+        this.createdAt,
+        this.updatedAt,
+        this.deletedAt,
+        this.account,
+        this.type,
+        this.payload});
+
+  PasswdInfoEntityData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    deletedAt = json['deleted_at'];
+    account = json['account'];
+    type = json['type'];
+    payload = json['payload'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['deleted_at'] = this.deletedAt;
+    data['account'] = this.account;
+    data['type'] = this.type;
+    data['payload'] = this.payload;
     return data;
   }
 }

@@ -1,18 +1,15 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../common/entity/passw_store.dart';
-import '../../../common/storage/user.dart';
 import '../../../common/utils/strings.dart';
 import '../../../dao/password_manager.dart';
-import 'package:encrypt/encrypt.dart' as encrypt; // 加密
 
 class AddPassController extends GetxController {
   final String ctype = Get.arguments["ctype"];
-  String title = Get.arguments["title"];
-  final String cid = Get.arguments["cid"];
-  Icon beforeIcon = Icon(Icons.add);
+  String? title = Get.arguments["title"];
+  String? cid = Get.arguments["cid"];
+  bool? edit = Get.arguments["edit"];
+  Icon beforeIcon = const Icon(Icons.add);
   bool loginEnable = false; // 參數校驗完畢 可登錄
 
   Logins logins = Logins();
@@ -30,24 +27,38 @@ class AddPassController extends GetxController {
 
     switch (ctype) {
       case "website":
-        beforeIcon = Icon(Icons.webhook_outlined);
+        beforeIcon = const Icon(Icons.webhook_outlined);
         break;
       case "card":
-        beforeIcon = Icon(Icons.add_card);
+        beforeIcon = const Icon(Icons.add_card);
         break;
       case "identity":
-        beforeIcon = Icon(Icons.perm_identity);
+        beforeIcon = const Icon(Icons.perm_identity);
         break;
       case "note":
-        beforeIcon = Icon(Icons.note_alt_outlined);
+        beforeIcon = const Icon(Icons.note_alt_outlined);
         break;
+    }
+
+    if (cid != "") {
+     var px = await PasswordManager.PasswordInfo(cid!);
+     if (px != null) {
+       logins = px.logins;
+       cards = px.cards;
+       identities = px.identities;
+       notes = px.notes;
+       print("==============");
+       print(logins.name);
+       print("==============2");
+
+     }
     }
 
     loading = false;
     update();
   }
 
-  void checkInput() {
+  void checkInputByLogin() {
     bool enable;
     if (isNotEmpty(logins.account) &&
         isNotEmpty(logins.password) &&
@@ -61,28 +72,28 @@ class AddPassController extends GetxController {
   }
 
   void addParams() async {
-    // var passwdStore = await EncryptionStore.GET();
+    // var passwdStore = await PasswordManager.AllInfo();
     // if (passwdStore != null) {
-    //   switch (ctype) {
-    //     case "website":
-    //       passwdStore.logins?.add(logins);
-    //       break;
-    //     case "card":
-    //       passwdStore.cards?.add(cards);
-    //       break;
-    //     case "identity":
-    //       passwdStore.identities?.add(identities);
-    //       break;
-    //     case "note":
-    //       passwdStore.notes?.add(notes);
-    //       break;
-    //   }
+      switch (ctype) {
+        case "login":
+          bool? r = await PasswordManager.AddPassword(ctype, logins);
+          if (r== null) {
+            Get.snackbar("Error", "添加失败");
+            return;
+          }
+          Get.snackbar("SUCCESS", "添加成功");
+          break;
+        // case "card":
+        //   passwdStore.cards?.add(cards);
+        //   break;
+        // case "identity":
+        //   passwdStore.identities?.add(identities);
+        //   break;
+        // case "note":
+        //   passwdStore.notes?.add(notes);
+        //   break;
+      }
 
-    // bool? r = await EncryptionStore.Add(passwdStore);
-    // if (r== null) {
-    //   Get.snackbar("Error", "添加失败");
-    //   return;
-    // }
-    // Get.snackbar("SUCCESS", "添加成功");
+
   }
 }
