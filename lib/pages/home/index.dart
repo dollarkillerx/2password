@@ -56,18 +56,6 @@ class HomePage extends GetView<HomeController> {
                     "title": "安全笔记",
                   });
             },
-          ),
-          ListTile(
-            leading: Icon(Icons.browse_gallery_rounded),
-            title: Text("回收站"),
-            trailing: Text("${controller.galleryLen}"),
-            onTap: () {
-              Get.toNamed(AppRoutes.GeneralList,
-                  arguments: {
-                    "ctype": "gallery",
-                    "title": "回收站",
-                  });
-            },
           )
         ],
       ),

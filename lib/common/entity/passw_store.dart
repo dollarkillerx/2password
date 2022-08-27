@@ -1,106 +1,3 @@
-class PasswdStore {
-  List<Logins>? logins;
-  List<Cards>? cards;
-  List<Identities>? identities;
-  List<Notes>? notes;
-
-  List<Logins>? loginsBak;
-  List<Cards>? cardsBak;
-  List<Identities>? identitiesBak;
-  List<Notes>? notesBak;
-
-  PasswdStore(
-      {this.logins,
-        this.cards,
-        this.identities,
-        this.notes,
-        this.loginsBak,
-        this.cardsBak,
-        this.identitiesBak,
-        this.notesBak});
-
-  PasswdStore.fromJson(Map<String, dynamic> json) {
-    if (json['logins'] != null) {
-      logins = <Logins>[];
-      json['logins'].forEach((v) {
-        logins!.add(new Logins.fromJson(v));
-      });
-    }
-    if (json['cards'] != null) {
-      cards = <Cards>[];
-      json['cards'].forEach((v) {
-        cards!.add(new Cards.fromJson(v));
-      });
-    }
-    if (json['identities'] != null) {
-      identities = <Identities>[];
-      json['identities'].forEach((v) {
-        identities!.add(new Identities.fromJson(v));
-      });
-    }
-    if (json['notes'] != null) {
-      notes = <Notes>[];
-      json['notes'].forEach((v) {
-        notes!.add(new Notes.fromJson(v));
-      });
-    }
-    if (json['logins_bak'] != null) {
-      loginsBak = <Logins>[];
-      json['logins_bak'].forEach((v) {
-        loginsBak!.add(new Logins.fromJson(v));
-      });
-    }
-    if (json['cards_bak'] != null) {
-      cardsBak = <Cards>[];
-      json['cards_bak'].forEach((v) {
-        cardsBak!.add(new Cards.fromJson(v));
-      });
-    }
-    if (json['identities_bak'] != null) {
-      identitiesBak = <Identities>[];
-      json['identities_bak'].forEach((v) {
-        identitiesBak!.add(new Identities.fromJson(v));
-      });
-    }
-    if (json['notes_bak'] != null) {
-      notesBak = <Notes>[];
-      json['notes_bak'].forEach((v) {
-        notesBak!.add(new Notes.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.logins != null) {
-      data['logins'] = this.logins!.map((v) => v.toJson()).toList();
-    }
-    if (this.cards != null) {
-      data['cards'] = this.cards!.map((v) => v.toJson()).toList();
-    }
-    if (this.identities != null) {
-      data['identities'] = this.identities!.map((v) => v.toJson()).toList();
-    }
-    if (this.notes != null) {
-      data['notes'] = this.notes!.map((v) => v.toJson()).toList();
-    }
-    if (this.loginsBak != null) {
-      data['logins_bak'] = this.loginsBak!.map((v) => v.toJson()).toList();
-    }
-    if (this.cardsBak != null) {
-      data['cards_bak'] = this.cardsBak!.map((v) => v.toJson()).toList();
-    }
-    if (this.identitiesBak != null) {
-      data['identities_bak'] =
-          this.identitiesBak!.map((v) => v.toJson()).toList();
-    }
-    if (this.notesBak != null) {
-      data['notes_bak'] = this.notesBak!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
 class Logins {
   String? type;
   String? id;
@@ -259,24 +156,55 @@ class Notes {
   }
 }
 
-class DJ {
+class PasswordAllInfoEntity {
   String? requestId;
   String? code;
-  String? data;
+  PasswordAllInfoData? data;
 
-  DJ({this.requestId, this.code, this.data});
+  PasswordAllInfoEntity({this.requestId, this.code, this.data});
 
-  DJ.fromJson(Map<String, dynamic> json) {
+  PasswordAllInfoEntity.fromJson(Map<String, dynamic> json) {
     requestId = json['request_id'];
     code = json['code'];
-    data = json['data'];
+    data = json['data'] != null ? new PasswordAllInfoData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['request_id'] = this.requestId;
     data['code'] = this.code;
-    data['data'] = this.data;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
+}
+
+class PasswordAllInfoData {
+  int? loginTypeCount;
+  int? cardCount;
+  int? identityTypeCount;
+  int? noteTypeCount;
+
+  PasswordAllInfoData(
+      {this.loginTypeCount,
+        this.cardCount,
+        this.identityTypeCount,
+        this.noteTypeCount});
+
+  PasswordAllInfoData.fromJson(Map<String, dynamic> json) {
+    loginTypeCount = json['login_type_count'];
+    cardCount = json['card_count'];
+    identityTypeCount = json['identity_type_count'];
+    noteTypeCount = json['note_type_count'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['login_type_count'] = this.loginTypeCount;
+    data['card_count'] = this.cardCount;
+    data['identity_type_count'] = this.identityTypeCount;
+    data['note_type_count'] = this.noteTypeCount;
     return data;
   }
 }

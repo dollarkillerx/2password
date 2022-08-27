@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../dao/store.dart';
+import '../../../dao/password_manager.dart';
 
 class GeneralListController extends GetxController {
   final String ctype = Get.arguments["ctype"];
@@ -31,10 +31,10 @@ class GeneralListController extends GetxController {
         break;
     }
 
-    var passwdStore = await EncryptionStore.GET();
-    if (passwdStore == null) {
-
-    }
+    // var passwdStore = await EncryptionStore.GET();
+    // if (passwdStore == null) {
+    //
+    // }
 
     loading = false;
     update();

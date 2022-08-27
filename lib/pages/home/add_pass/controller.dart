@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../../common/entity/passw_store.dart';
 import '../../../common/storage/user.dart';
 import '../../../common/utils/strings.dart';
-import '../../../dao/store.dart';
+import '../../../dao/password_manager.dart';
 import 'package:encrypt/encrypt.dart' as encrypt; // 加密
 
 class AddPassController extends GetxController {
@@ -61,29 +61,28 @@ class AddPassController extends GetxController {
   }
 
   void addParams() async {
-    var passwdStore = await EncryptionStore.GET();
-    if (passwdStore != null) {
-      switch (ctype) {
-        case "website":
-          passwdStore.logins?.add(logins);
-          break;
-        case "card":
-          passwdStore.cards?.add(cards);
-          break;
-        case "identity":
-          passwdStore.identities?.add(identities);
-          break;
-        case "note":
-          passwdStore.notes?.add(notes);
-          break;
-      }
+    // var passwdStore = await EncryptionStore.GET();
+    // if (passwdStore != null) {
+    //   switch (ctype) {
+    //     case "website":
+    //       passwdStore.logins?.add(logins);
+    //       break;
+    //     case "card":
+    //       passwdStore.cards?.add(cards);
+    //       break;
+    //     case "identity":
+    //       passwdStore.identities?.add(identities);
+    //       break;
+    //     case "note":
+    //       passwdStore.notes?.add(notes);
+    //       break;
+    //   }
 
-      bool? r = await EncryptionStore.Add(passwdStore);
-      if (r== null) {
-        Get.snackbar("Error", "添加失败");
-        return;
-      }
-      Get.snackbar("SUCCESS", "添加成功");
-    }
+    // bool? r = await EncryptionStore.Add(passwdStore);
+    // if (r== null) {
+    //   Get.snackbar("Error", "添加失败");
+    //   return;
+    // }
+    // Get.snackbar("SUCCESS", "添加成功");
   }
 }
