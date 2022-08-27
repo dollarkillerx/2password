@@ -6,6 +6,8 @@ import '../common/library/dio_adapter.dart';
 import '../common/library/interface.dart';
 
 class LoginDao {
+  static bool loggedIn = false;
+
   static Future<CaptchaEntity?> captcha() async {
     var request = Captcha();
     HiNetAdapter adapter = DioAdapter();

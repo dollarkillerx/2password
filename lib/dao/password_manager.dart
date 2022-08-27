@@ -15,16 +15,15 @@ class PasswordManager {
       var result = await adapter.send(c);
       var err = NetTools.CheckError(result.data);
       if (err != null) {
-        print(err);
-        SmartDialog.showToast("$err");
+        // SmartDialog.showToast("$err");
         return null;
       }
 
       PasswordAllInfoEntity cap = PasswordAllInfoEntity.fromJson(result.data);
       return cap;
     } catch (e) {
-      print(e);
-      SmartDialog.showToast("$e");
+      // print(e);
+      // SmartDialog.showToast("$e");
     }
     return null;
   }
@@ -133,6 +132,57 @@ class PasswordManager {
       }
 
       return item;
+    } catch (e) {
+      print(e);
+      SmartDialog.showToast("$e");
+    }
+    return null;
+  }
+
+  static Future<bool?> DeletePwd(String id) async {
+    var c = DeletePasswordInfo();
+    HiNetAdapter adapter = DioAdapter();
+    c = c.setUrl(id);
+
+    try {
+      var result = await adapter.send(c);
+      var err = NetTools.CheckError(result.data);
+      if (err != null) {
+        print(err);
+        SmartDialog.showToast("$err");
+        return null;
+      }
+
+      return true;
+    } catch (e) {
+      print(e);
+      SmartDialog.showToast("$e");
+    }
+    return null;
+  }
+
+  static Future<bool?> UpdatePwd(String id, Object payload) async {
+    var c = UpdatePassword();
+    HiNetAdapter adapter = DioAdapter();
+
+    var pay = jsonEncode(payload);
+
+    String? payloadStr = await Encrypt.AESEncryption(pay);
+    if (payloadStr == null) {
+      return null;
+    }
+    c.setParam(PasswdUpdate(id: id, payload: payloadStr).toJson());
+
+    try {
+      var result = await adapter.send(c);
+      var err = NetTools.CheckError(result.data);
+      if (err != null) {
+        print(err);
+        SmartDialog.showToast("$err");
+        return null;
+      }
+
+      return true;
     } catch (e) {
       print(e);
       SmartDialog.showToast("$e");

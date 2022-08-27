@@ -1,7 +1,7 @@
-const SERVER_API_URL = "192.168.31.244:8574/api/v1";
-const SERVER_API_URL2 = "192.168.31.244:8574";
+const SERVER_API_URL = "2password.worldlink.net.cn/api/v1";
+const SERVER_API_URL2 = "2password.worldlink.net.cn";
 const JWTHeader = "Authorization";
-var userHttps = false;
+var userHttps = true;
 
 String authority() {
   if (userHttps) {

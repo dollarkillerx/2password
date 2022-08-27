@@ -16,6 +16,8 @@ class AddPassPage extends GetView<AddPassController> {
               controller.logins.name = text;
               controller.checkInputByLogin();
             },
+            bindText: controller.logins.name,
+            readOnly: controller.readOnly,
           ),
           LoginInput(
             title: "account",
@@ -24,6 +26,8 @@ class AddPassPage extends GetView<AddPassController> {
               controller.logins.account = text;
               controller.checkInputByLogin();
             },
+            bindText: controller.logins.account,
+            readOnly: controller.readOnly,
           ),
           LoginInput(
             title: "password",
@@ -32,6 +36,8 @@ class AddPassPage extends GetView<AddPassController> {
               controller.logins.password = text;
               controller.checkInputByLogin();
             },
+            bindText: controller.logins.password,
+            readOnly: controller.readOnly,
           ),
           LoginInput(
             title: "remark",
@@ -40,20 +46,29 @@ class AddPassPage extends GetView<AddPassController> {
               controller.logins.remark = text;
               controller.checkInputByLogin();
             },
+            bindText: controller.logins.remark,
+            readOnly: controller.readOnly,
           ),
           LoginInput(
             title: "url",
-            hint: "請輸入url",
             onChanged: (text) {
               controller.logins.url = text;
               controller.checkInputByLogin();
             },
+            bindText: controller.logins.url,
+            readOnly: controller.readOnly,
           ),
-          Padding(
+          controller.edit == null
+              ? Padding(
+                  padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+                  child: Obx(() => LoginButton('添加',
+                      enable: controller.loginEnable.value,
+                      onPressed: controller.addParams)),
+                )
+              : Padding(
             padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-            child: LoginButton('添加',
-                enable: controller.loginEnable,
-                onPressed: controller.addParams),
+            child: LoginButton(controller.modifyName,
+                onPressed: controller.modifyParams),
           ),
           Padding(
             padding: EdgeInsets.only(top: 20, left: 20, right: 20),

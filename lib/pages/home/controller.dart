@@ -15,6 +15,10 @@ class HomeController extends GetxController {
   void onInit() async {
     super.onInit();
 
+    flashData();
+  }
+
+  flashData() async {
     PasswordAllInfoEntity? passwordAllInfoEntity = await PasswordManager.AllInfo();
     if (passwordAllInfoEntity == null) {
       // Get.snackbar("Error", "登錄失敗 賬戶或密碼錯誤");

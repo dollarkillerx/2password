@@ -6,9 +6,9 @@ import 'controller.dart';
 class GeneralListPage extends GetView<GeneralListController> {
   _view() {
     return Container(
-      child: ListView(
-        children: controller.genList,
-      ),
+      child: ListView.builder(
+          itemCount: controller.genList.length,
+          itemBuilder: (context, index) => controller.genList[index]),
     );
   }
 

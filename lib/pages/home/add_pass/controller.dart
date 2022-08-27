@@ -10,7 +10,9 @@ class AddPassController extends GetxController {
   String? cid = Get.arguments["cid"];
   bool? edit = Get.arguments["edit"];
   Icon beforeIcon = const Icon(Icons.add);
-  bool loginEnable = false; // 參數校驗完畢 可登錄
+  var loginEnable = false.obs; // 參數校驗完畢 可登錄
+  var readOnly = false;
+  String modifyName = "修改";
 
   Logins logins = Logins();
   Cards cards = Cards();
@@ -22,8 +24,6 @@ class AddPassController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-
-    title = "添加 $title";
 
     switch (ctype) {
       case "website":
@@ -47,11 +47,11 @@ class AddPassController extends GetxController {
        cards = px.cards;
        identities = px.identities;
        notes = px.notes;
-       print("==============");
-       print(logins.name);
-       print("==============2");
-
      }
+    }
+
+    if (edit != null) {
+      readOnly = true;
     }
 
     loading = false;
@@ -59,7 +59,7 @@ class AddPassController extends GetxController {
   }
 
   void checkInputByLogin() {
-    bool enable;
+    bool enable = false;
     if (isNotEmpty(logins.account) &&
         isNotEmpty(logins.password) &&
         isNotEmpty(logins.name)) {
@@ -67,8 +67,7 @@ class AddPassController extends GetxController {
     } else {
       enable = false;
     }
-    loginEnable = enable;
-    update();
+    loginEnable.value = enable;
   }
 
   void addParams() async {
@@ -81,6 +80,7 @@ class AddPassController extends GetxController {
             Get.snackbar("Error", "添加失败");
             return;
           }
+          Get.back();
           Get.snackbar("SUCCESS", "添加成功");
           break;
         // case "card":
@@ -95,5 +95,36 @@ class AddPassController extends GetxController {
       }
 
 
+  }
+
+  void modifyParams() async {
+    if (modifyName != "提交修改") {
+      readOnly = false;
+      modifyName = "提交修改";
+
+      update();
+      return;
+    }
+
+    switch (ctype) {
+      case "login":
+        bool? r = await PasswordManager.UpdatePwd(cid!, logins);
+        if (r== null) {
+          Get.snackbar("Error", "修改失败");
+          return;
+        }
+        Get.back();
+        Get.snackbar("SUCCESS", "修改成功");
+        break;
+    // case "card":
+    //   passwdStore.cards?.add(cards);
+    //   break;
+    // case "identity":
+    //   passwdStore.identities?.add(identities);
+    //   break;
+    // case "note":
+    //   passwdStore.notes?.add(notes);
+    //   break;
+    }
   }
 }

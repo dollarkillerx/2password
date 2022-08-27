@@ -194,6 +194,7 @@ class _LoginPageState extends State<LoginPage> {
       AppData.setMainPass(password!);
       AppData.setEncryption(ui.data!.publicKey!, pKey);
       Get.snackbar("SUCCESS", "登錄成功");
+      LoginDao.loggedIn = true;
       Get.offAllNamed(AppRoutes.DASHBOARD);
     } catch (e) {
       print(e);

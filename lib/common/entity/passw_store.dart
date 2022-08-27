@@ -255,6 +255,25 @@ class PasswdAdd {
   }
 }
 
+class PasswdUpdate {
+  String? id;
+  String? payload;
+
+  PasswdUpdate({this.id, this.payload});
+
+  PasswdUpdate.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    payload = json['payload'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['payload'] = this.payload;
+    return data;
+  }
+}
+
 class PasswdListEntity {
   String? requestId;
   String? code;

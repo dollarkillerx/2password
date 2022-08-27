@@ -9,8 +9,11 @@ class LoginInput extends StatefulWidget {
   final bool obscureText; // password input
   final TextInputType? keyboardType;
   final Widget? rightWidget;
+  final String? bindText;
+  final bool? readOnly;
+  TextEditingController  textController = TextEditingController();
 
-  const LoginInput(
+  LoginInput(
       {super.key,
       required this.title, // title
       this.hint,
@@ -19,7 +22,11 @@ class LoginInput extends StatefulWidget {
       this.lineStretch = false,
       this.obscureText = false,
       this.keyboardType,
-      this.rightWidget});
+      this.rightWidget, this.bindText,this.readOnly}) {
+    if (bindText != null) {
+      textController.text = bindText!;
+    }
+  }
 
   @override
   State<LoginInput> createState() => _LoginInputState();
@@ -81,8 +88,45 @@ class _LoginInputState extends State<LoginInput> {
   }
 
   _input() {
+
+    var readOnly = false;
+    if (widget.readOnly != null) {
+      readOnly = widget.readOnly!;
+    }
+
+    if (widget.bindText != null) {
+      return Expanded(
+        child: TextField(
+          readOnly: readOnly,
+          controller: widget.textController,
+          focusNode: _focusNode,
+          // 是否被選擇
+          onChanged: widget.onChanged,
+          // 改變
+          obscureText: widget.obscureText,
+          // 密碼
+          keyboardType: widget.keyboardType,
+          // keyboard類型
+          autofocus: !widget.obscureText,
+          // 光標顔色
+          cursorColor: Colors.black87,
+          maxLines: 1,
+          style: TextStyle(
+              fontSize: 16, color: Colors.black, fontWeight: FontWeight.w300),
+          // 輸入框樣式
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(left: 20, right: 20),
+            border: InputBorder.none,
+            hintText: widget.hint ?? '',
+            hintStyle: TextStyle(fontSize: 15, color: Colors.grey),
+          ),
+        ),
+      );
+    }
+
     return Expanded(
       child: TextField(
+        readOnly: readOnly,
         focusNode: _focusNode,
         // 是否被選擇
         onChanged: widget.onChanged,

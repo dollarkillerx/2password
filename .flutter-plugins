@@ -1,4 +1,9 @@
 # This is a generated file; do not edit or check into version control.
+flutter_plugin_android_lifecycle=D:\\flutter\\.pub-cache\\hosted\\pub.flutter-io.cn\\flutter_plugin_android_lifecycle-2.0.7\\
+local_auth=D:\\flutter\\.pub-cache\\hosted\\pub.flutter-io.cn\\local_auth-2.1.2\\
+local_auth_android=D:\\flutter\\.pub-cache\\hosted\\pub.flutter-io.cn\\local_auth_android-1.0.11\\
+local_auth_ios=D:\\flutter\\.pub-cache\\hosted\\pub.flutter-io.cn\\local_auth_ios-1.0.9\\
+local_auth_windows=D:\\flutter\\.pub-cache\\hosted\\pub.flutter-io.cn\\local_auth_windows-1.0.3\\
 path_provider=D:\\flutter\\.pub-cache\\hosted\\pub.flutter-io.cn\\path_provider-2.0.11\\
 path_provider_android=D:\\flutter\\.pub-cache\\hosted\\pub.flutter-io.cn\\path_provider_android-2.0.19\\
 path_provider_ios=D:\\flutter\\.pub-cache\\hosted\\pub.flutter-io.cn\\path_provider_ios-2.0.11\\

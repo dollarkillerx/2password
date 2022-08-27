@@ -7,6 +7,7 @@ import 'package:password2/pages/user/registration.dart';
 import '../../pages/bashboard/binding.dart';
 import '../../pages/bashboard/index.dart';
 import '../../pages/notfound/index.dart';
+import '../../pages/user/auth.dart';
 import 'app_routes.dart';
 import 'package:get/get.dart';
 
@@ -36,6 +37,10 @@ class AppPages {
       name: AppRoutes.AddPass,
       page: () => AddPassPage(),
       binding: AddPassBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.AuthLocal,
+      page: () => AuthLol(),
     ),
   ];
 

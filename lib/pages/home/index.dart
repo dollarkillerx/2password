@@ -13,48 +13,56 @@ class HomePage extends GetView<HomeController> {
             leading: Icon(Icons.webhook_outlined),
             title: Text("网站"),
             trailing: Text("${controller.websiteLen}"),
-            onTap: () {
-              Get.toNamed(AppRoutes.GeneralList,
+            onTap: () async {
+              await Get.toNamed(AppRoutes.GeneralList,
                   arguments: {
                     "ctype": "login",
-                    "title": "网站密码",
+                    "title": "添加 网站密码",
                   });
+
+              controller.flashData();
             },
           ),
           ListTile(
             leading: Icon(Icons.add_card),
             title: Text("支付卡"),
             trailing: Text("${controller.cardLen}"),
-            onTap: () {
-              Get.toNamed(AppRoutes.GeneralList,
+            onTap: () async {
+              await Get.toNamed(AppRoutes.GeneralList,
                   arguments: {
                     "ctype": "card",
-                    "title": "支付卡",
+                    "title": "添加 支付卡",
                   });
+
+              controller.flashData();
             },
           ),
           ListTile(
             leading: Icon(Icons.perm_identity),
             title: Text("身份"),
             trailing: Text("${controller.identityLen}"),
-            onTap: () {
-              Get.toNamed(AppRoutes.GeneralList,
+            onTap: () async {
+              await Get.toNamed(AppRoutes.GeneralList,
                   arguments: {
                     "ctype": "identity",
-                    "title": "身份",
+                    "title": "添加 身份",
                   });
+
+              controller.flashData();
             },
           ),
           ListTile(
             leading: Icon(Icons.note_alt_outlined),
             title: Text("安全笔记"),
             trailing: Text("${controller.noteLen}"),
-            onTap: () {
-              Get.toNamed(AppRoutes.GeneralList,
+            onTap: () async {
+              await Get.toNamed(AppRoutes.GeneralList,
                   arguments: {
                     "ctype": "note",
-                    "title": "安全笔记",
+                    "title": "添加 安全笔记",
                   });
+
+              controller.flashData();
             },
           )
         ],
