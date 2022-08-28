@@ -44,6 +44,8 @@ dependencies:
   ninja: ^3.0.8
   flutter_slidable: ^2.0.0
   local_auth: ^2.1.2
+  image_picker: ^0.8.5+3
+  flutter_image_compress: ^1.1.1
 
 dev_dependencies:
   flutter_test:

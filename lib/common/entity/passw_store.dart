@@ -22,7 +22,7 @@ class Logins {
   String? remark;
   String? url;
   String? createTime;
-  List<String?>? img;
+  List<String>? img;
 
   Logins(
       {this.type,

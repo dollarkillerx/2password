@@ -5,11 +5,10 @@ import 'controller.dart';
 
 class GeneralListPage extends GetView<GeneralListController> {
   _view() {
-    return Container(
-      child: ListView.builder(
-          itemCount: controller.genList.length,
-          itemBuilder: (context, index) => controller.genList[index]),
-    );
+    return ListView.builder(
+        itemCount: controller.genList.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) => controller.genList[index]);
   }
 
   @override
@@ -21,7 +20,7 @@ class GeneralListPage extends GetView<GeneralListController> {
       body: GetBuilder<GeneralListController>(
         builder: (controller) {
           return LoadingWidget(
-              child: Center(
+              child: Container(
                 child: _view(),
               ),
               isLoading: controller.loading);

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:password2/widget/loading.dart';
+import '../../../common/utils/img.dart';
 import '../../../widget/input.dart';
 import 'controller.dart';
 
@@ -66,17 +68,34 @@ class AddPassPage extends GetView<AddPassController> {
                       onPressed: controller.addParams)),
                 )
               : Padding(
+                  padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+                  child: LoginButton(controller.modifyName,
+                      onPressed: controller.modifyParams),
+                ),
+          Padding(
             padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-            child: LoginButton(controller.modifyName,
-                onPressed: controller.modifyParams),
+            child: LoginButton("复制密码",
+                onPressed: () {
+                  Clipboard.setData(
+                      ClipboardData(text: controller.logins.password));
+                }),
           ),
           Padding(
             padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-            child: ElevatedButton(
+            child: LoginButton("返回",
                 onPressed: () {
-                  Get.back();
-                },
-                child: Text("返回")),
+                      Get.back();
+                }),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+            child: LoginButton("拍照",
+                onPressed: () async {
+                  await controller.pickImage();
+                }),
+          ),
+          Column(
+            children: controller.imgsWidget,
           ),
         ],
       ),
@@ -92,7 +111,7 @@ class AddPassPage extends GetView<AddPassController> {
       body: GetBuilder<AddPassController>(
         builder: (controller) {
           return LoadingWidget(
-              child: Center(
+              child: Container(
                 child: _view(),
               ),
               isLoading: controller.loading);

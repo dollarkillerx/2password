@@ -94,10 +94,13 @@ class _AuthLolState extends State<AuthLol> {
               },
             ),
             LoginButton("使用生物识别解锁",onPressed: _authenticateWithBiometrics),
-            LoginButton("提交",onPressed: () {
-              if (AppData.getMainPass() == mps) {
-                LoginDao.loggedIn = true;
-                Get.offAllNamed(AppRoutes.DASHBOARD);
+            LoginButton("提交",onPressed: () async {
+              var vk = await AppData.getMainPass();
+              if (vk != null) {
+                if (vk == mps) {
+                  LoginDao.loggedIn = true;
+                  Get.offAllNamed(AppRoutes.DASHBOARD);
+                }
               }
             }),
           ],

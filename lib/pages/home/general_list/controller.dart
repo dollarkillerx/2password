@@ -46,21 +46,23 @@ class GeneralListController extends GetxController {
   }
 
   flashData(int i) async {
-    genList = [InkWell(
-      child: ListTile(
-        leading: beforeIcon,
-        title: Text("添加密码"),
-        trailing: Icon(Icons.add),
-      ),
-      onTap: () async {
-        await Get.toNamed(AppRoutes.AddPass, arguments: {
-          "ctype": ctype,
-          "title": title,
-          "cid": "",
-        });
-        await flashData(1);
-      },
-    )];
+    genList = [
+      InkWell(
+        child: ListTile(
+          leading: beforeIcon,
+          title: Text("添加密码"),
+          trailing: Icon(Icons.add),
+        ),
+        onTap: () async {
+          await Get.toNamed(AppRoutes.AddPass, arguments: {
+            "ctype": ctype,
+            "title": title,
+            "cid": "",
+          });
+          await flashData(1);
+        },
+      )
+    ];
 
     var passwdStore = await PasswordManager.PasswdList(ctype);
     if (passwdStore != null) {
@@ -71,53 +73,53 @@ class GeneralListController extends GetxController {
     }
 
     logins.forEach((element) {
-      genList.add(
-          Slidable(child: ListTile(
-            title: Text("${element.name}"),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("创建时间: ${element.createTime}"),
-                Text("备注: ${element.remark}")
-              ],
-            ),
-            onTap: () async {
-              await Get.toNamed(AppRoutes.AddPass, arguments: {
-                "ctype": ctype,
-                "title": "查看密码: ${element.name}",
-                "cid": element.id,
-                "edit": false,
-              });
-
-              flashData(1);
-            },
+      genList.add(Slidable(
+        child: ListTile(
+          title: Text("${element.name}"),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("创建时间: ${element.createTime}"),
+              Text("Url: ${element.url??""}"),
+              Text("备注: ${element.remark??""}")
+            ],
           ),
-            key: const ValueKey(0),
+          onTap: () async {
+            await Get.toNamed(AppRoutes.AddPass, arguments: {
+              "ctype": ctype,
+              "title": "查看密码: ${element.name}",
+              "cid": element.id,
+              "edit": false,
+            });
+
+            flashData(1);
+          },
+        ),
+        key: const ValueKey(0),
 // The end action pane is the one at the right or the bottom side.
-            endActionPane: ActionPane(
-              motion: ScrollMotion(),
-              children: [
-                SlidableAction(
-                  flex: 1,
-                  onPressed: (context) {
-                    deletePwd(context, element.id!,element.name!);
-                  },
-                  backgroundColor: Colors.redAccent,
-                  foregroundColor: Colors.white,
-                  icon: Icons.save,
-                  label: '刪除',
-                ),
-              ],
+        endActionPane: ActionPane(
+          motion: ScrollMotion(),
+          children: [
+            SlidableAction(
+              flex: 1,
+              onPressed: (context) {
+                deletePwd(context, element.id!, element.name!);
+              },
+              backgroundColor: Colors.redAccent,
+              foregroundColor: Colors.white,
+              icon: Icons.save,
+              label: '刪除',
             ),
-          )
-      );
+          ],
+        ),
+      ));
     });
 
     loading = false;
     update();
   }
 
-  deletePwd(BuildContext context,String id, String name) async {
+  deletePwd(BuildContext context, String id, String name) async {
     showDialog(
         context: context,
         barrierDismissible: false,

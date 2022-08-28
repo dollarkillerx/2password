@@ -42,7 +42,7 @@ class DashBoardPage extends GetView<DashBoardController> {
           // 顯示未選中的labels
           items: <BottomNavigationBarItem>[
             _bottomNavigationBarItem(CupertinoIcons.home, "Home"),
-            _bottomNavigationBarItem(CupertinoIcons.at_badge_minus, "About"),
+            _bottomNavigationBarItem(CupertinoIcons.refresh_circled, "生成器"),
           ],
         ),
       );
